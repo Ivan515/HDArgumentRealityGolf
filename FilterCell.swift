@@ -9,6 +9,7 @@
 import UIKit
 
 class FilterCell: UITableViewCell {
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
@@ -21,7 +22,7 @@ class FilterCell: UITableViewCell {
     let label: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.textColor = .white
+        lb.textColor = .black
         lb.font = UIFont.boldSystemFont(ofSize: 24)
         lb.textAlignment = .left
         return lb
@@ -30,7 +31,7 @@ class FilterCell: UITableViewCell {
     let textField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.textColor = .white
+        tf.textColor = .black
         tf.font = UIFont.boldSystemFont(ofSize: 18)
         tf.textAlignment = .right
         tf.allowsEditingTextAttributes = false
@@ -41,7 +42,7 @@ class FilterCell: UITableViewCell {
         addSubview(label)
         addSubview(textField)
         
-        backgroundColor = .black
+        backgroundColor = .white
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[lb(145)]-0-[tf]-8-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["lb":label, "tf":textField]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[lb]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["lb":label]))

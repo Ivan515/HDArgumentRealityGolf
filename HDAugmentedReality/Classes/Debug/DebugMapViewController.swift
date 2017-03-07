@@ -72,7 +72,14 @@ open class DebugMapViewController: UIViewController, MKMapViewDelegate, CLLocati
             {
                 let mapAnnotation = MKPointAnnotation()
                 mapAnnotation.coordinate = coordinate
-                let text = String(format: "%@, AZ: %.0f, VL: %i, %.0fm", annotation.title != nil ? annotation.title! : "", annotation.azimuth, annotation.verticalLevel, annotation.distanceFromUser)
+                
+                let distance = annotation.distanceFromUser * 3.2808 //meters to feet
+                
+                let shotDistance = String(format: "%.f yd %.f ft", annotation.shotDistance / 3, annotation.shotDistance.truncatingRemainder(dividingBy: 3))
+                let distanceToPin = String(format: "%.f yd %.f ft", distance / 3, distance.truncatingRemainder(dividingBy: 3))
+                
+                let text = String(format: "%@, S: %@, DtP: %@", annotation.title!, shotDistance, distanceToPin)
+                
                 mapAnnotation.title = text
                 mapAnnotations.append(mapAnnotation)
             }

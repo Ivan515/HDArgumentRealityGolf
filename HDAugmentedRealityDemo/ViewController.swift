@@ -95,7 +95,13 @@ class ViewController: UIViewController, ARDataSource {
 
             let annotation = ARAnnotation()
             annotation.location = CLLocation(latitude: lat, longitude: long)
-            annotation.title = "POI \(data)"
+            annotation.tournament = data.tournament.tourDescription
+            annotation.title = data.player.playerFullName
+            annotation.shotDistance = Double(data.shot.distance)! / 12 //convert inches to feet
+            annotation.year = data.tournament.year
+            annotation.hole = data.shot.hole
+            annotation.round = data.shot.round
+            
             annotations.append(annotation)
         }
         return annotations
@@ -104,6 +110,7 @@ class ViewController: UIViewController, ARDataSource {
     @IBAction func buttonTap(_ sender: AnyObject)
     {
         showARViewController()
+        filterView.dismissFilterView()
     }
     
     func handleLocationFailure(elapsedSeconds: TimeInterval, acquiredLocationBefore: Bool, arViewController: ARViewController?)
@@ -134,11 +141,14 @@ class ViewController: UIViewController, ARDataSource {
         self.filterButton?.removeFromSuperview()
         let filterButton: UIButton = UIButton()
         filterButton.frame = CGRect(x: 0, y: self.view.bounds.size.height - 60, width: self.view.bounds.size.width, height: 60)
-        filterButton.backgroundColor = .black
+        
+        filterButton.backgroundColor = UIColor(red: 101/255, green: 156/255, blue: 53/255, alpha: 1)
         filterButton.setTitle("FILTER", for: .normal)
         filterButton.setTitleColor(.white, for: .normal)
         filterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 28)
+        
         filterButton.addTarget(self, action: #selector(self.showFilterView), for: UIControlEvents.touchUpInside)
+        
         self.view.addSubview(filterButton)
         self.filterButton = filterButton
     }

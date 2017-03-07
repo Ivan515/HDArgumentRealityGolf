@@ -32,10 +32,21 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
     
     var updateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("UPDATE", for: .normal)
+        button.setTitle("Select shot data to view", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 26)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
+        button.backgroundColor = UIColor(red: 101/255, green: 156/255, blue: 53/255, alpha: 1)
         return button
+    }()
+    
+    var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Select Shot Data to View"
+        label.backgroundColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.textColor = UIColor(red: 230/255, green: 76/255, blue: 60/255, alpha: 1)
+        label.textAlignment = .center
+        return label
     }()
     
     func update() {
@@ -51,14 +62,17 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
     
     func showFilterView() {
         if let keyWindow = UIApplication.shared.keyWindow {
-            view = UIView(frame: CGRect(x: 0, y: keyWindow.frame.height / 2, width: keyWindow.frame.width, height: keyWindow.frame.height / 2))
-            view.backgroundColor = .black
+            view = UIView(frame: CGRect(x: 0, y: keyWindow.frame.height / 2 - 50, width: keyWindow.frame.width, height: keyWindow.frame.height / 2 - 50))
+            view.backgroundColor = .white
             view.frame = CGRect(x: 0, y: keyWindow.frame.height - 1, width: keyWindow.frame.width, height: 1)
             
             let swipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeDown(_:)))
             swipe.direction = UISwipeGestureRecognizerDirection.down
             
-            tableView = UITableView(frame: CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: keyWindow.frame.height / 2 - 70))
+            titleLabel.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: 50)
+            view.addSubview(titleLabel)
+            
+            tableView = UITableView(frame: CGRect(x: 0, y: 50, width: keyWindow.frame.width, height: keyWindow.frame.height / 2 - 70))
             tableView.backgroundColor = .black
             tableView.separatorInset = UIEdgeInsets.zero
             tableView.allowsSelection = false
@@ -69,16 +83,18 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
             tableView.addGestureRecognizer(swipe)
             view.addSubview(tableView)
             
-            picker = UIPickerView(frame: CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: keyWindow.frame.height / 2))
-            picker.backgroundColor = .black
+            picker = UIPickerView(frame: CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: keyWindow.frame.height / 2 + 10))
+            picker.backgroundColor = UIColor(red: 136/255, green: 192/255, blue: 87/255, alpha: 0.6)
             picker.tintColor = .white
             picker.showsSelectionIndicator = true
             picker.delegate = self
             picker.dataSource = self
             
-            toolBar.barStyle = UIBarStyle.black
-            toolBar.isTranslucent = true
+            toolBar.barStyle = UIBarStyle.default
+            toolBar.barTintColor = UIColor(red: 136/255, green: 192/255, blue: 87/255, alpha: 0.3)
+            toolBar.isTranslucent = false
             toolBar.tintColor = .white
+            
             toolBar.sizeToFit()
             
             let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(donePicker))
@@ -88,14 +104,14 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
             toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
             toolBar.isUserInteractionEnabled = true
             
-            updateButton.frame = CGRect(x: 0, y: keyWindow.frame.height / 2 - 70, width: keyWindow.frame.width, height: 70)
+            updateButton.frame = CGRect(x: 0, y: keyWindow.frame.height / 2 - 20, width: keyWindow.frame.width, height: 70)
             updateButton.addTarget(self, action: #selector(update), for: UIControlEvents.touchUpInside)
             view.addSubview(updateButton)
             
             keyWindow.addSubview(view)
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                self.view.frame = CGRect(x: 0, y: keyWindow.frame.height / 2, width: keyWindow.frame.width, height: keyWindow.frame.height)
+                self.view.frame = CGRect(x: 0, y: keyWindow.frame.height / 2 - 50, width: keyWindow.frame.width, height: keyWindow.frame.height)
             }, completion: { (completedAnimation) in
                 
             })
@@ -127,7 +143,7 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FilterCell
         
-        cell.label.textColor = .white
+        cell.label.textColor = .black
         cell.textField.inputView = picker
         cell.textField.inputAccessoryView = toolBar
         cell.textField.tag = indexPath.row

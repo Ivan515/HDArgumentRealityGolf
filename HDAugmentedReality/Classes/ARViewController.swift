@@ -1074,22 +1074,21 @@ open class ARViewController: UIViewController, ARTrackingManagerDelegate
     {
         self.closeButton?.removeFromSuperview()
         
-        if self.closeButtonImage == nil
-        {
-            let bundle = Bundle(for: ARViewController.self)
-            let path = bundle.path(forResource: "hdar_close", ofType: "png")
-            if let path = path
-            {
-                self.closeButtonImage = UIImage(contentsOfFile: path)
-            }
-        }
-        
-        // Close button - make it customizable
         let closeButton: UIButton = UIButton(type: UIButtonType.custom)
-        closeButton.setImage(closeButtonImage, for: UIControlState());
-        closeButton.frame = CGRect(x: self.view.bounds.size.width - 45, y: 5,width: 40,height: 40)
+        closeButton.frame = CGRect(x: self.view.bounds.size.width - 61, y: 5,width: 56,height: 56)
+        
+        closeButton.backgroundColor = UIColor(red: 230/255, green: 76/255, blue: 60/255, alpha: 1)
+        closeButton.layer.cornerRadius = 28
+        closeButton.layer.masksToBounds = false
+        
+        closeButton.setTitle("X", for: .normal)
+        closeButton.setTitleColor(.white, for: .normal)
+        closeButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 26)
+        
         closeButton.addTarget(self, action: #selector(ARViewController.closeButtonTap), for: UIControlEvents.touchUpInside)
+        
         closeButton.autoresizingMask = [UIViewAutoresizing.flexibleLeftMargin, UIViewAutoresizing.flexibleBottomMargin]
+        
         self.view.addSubview(closeButton)
         self.closeButton = closeButton
     }
@@ -1119,26 +1118,34 @@ open class ARViewController: UIViewController, ARTrackingManagerDelegate
     
     func addDebugUi()
     {
-        self.debugLabel?.removeFromSuperview()
+
         self.debugMapButton?.removeFromSuperview()
         
-        let debugLabel = UILabel()
-        debugLabel.backgroundColor = UIColor.white
-        debugLabel.textColor = UIColor.black
-        debugLabel.font = UIFont.boldSystemFont(ofSize: 10)
-        debugLabel.frame = CGRect(x: 5, y: self.view.bounds.size.height - 50, width: self.view.bounds.size.width - 10, height: 45)
-        debugLabel.numberOfLines = 0
-        debugLabel.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleTopMargin, UIViewAutoresizing.flexibleLeftMargin, UIViewAutoresizing.flexibleRightMargin]
-        debugLabel.textAlignment = NSTextAlignment.left
-        view.addSubview(debugLabel)
-        self.debugLabel = debugLabel
+//        self.debugLabel?.removeFromSuperview()
+//        let debugLabel = UILabel()
+//        debugLabel.backgroundColor = UIColor.white
+//        debugLabel.textColor = UIColor.black
+//        debugLabel.font = UIFont.boldSystemFont(ofSize: 10)
+//        debugLabel.frame = CGRect(x: 5, y: self.view.bounds.size.height - 50, width: self.view.bounds.size.width - 10, height: 45)
+//        debugLabel.numberOfLines = 0
+//        debugLabel.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleTopMargin, UIViewAutoresizing.flexibleLeftMargin, UIViewAutoresizing.flexibleRightMargin]
+//        debugLabel.textAlignment = NSTextAlignment.left
+//        view.addSubview(debugLabel)
+//        self.debugLabel = debugLabel
         
         let debugMapButton: UIButton = UIButton(type: UIButtonType.custom)
-        debugMapButton.frame = CGRect(x: 5,y: 5,width: 40,height: 40);
+        debugMapButton.frame = CGRect(x: 5,y: 5,width: 56,height: 56)
+        
         debugMapButton.addTarget(self, action: #selector(ARViewController.debugButtonTap), for: UIControlEvents.touchUpInside)
+        
+        debugMapButton.backgroundColor = UIColor(red: 136/255, green: 192/255, blue: 87/255, alpha: 1)
+        debugMapButton.layer.cornerRadius = 28
+        debugMapButton.layer.masksToBounds = false
+        
         debugMapButton.setTitle("map", for: UIControlState())
-        debugMapButton.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        debugMapButton.setTitleColor(UIColor.black, for: UIControlState())
+        debugMapButton.setTitleColor(UIColor.white, for: UIControlState())
+        debugMapButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        
         self.view.addSubview(debugMapButton)
         self.debugMapButton = debugMapButton
     }

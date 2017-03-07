@@ -30,7 +30,7 @@ open class TestAnnotationView: ARAnnotationView, UIGestureRecognizerDelegate
         label.font = UIFont.systemFont(ofSize: 10)
         label.numberOfLines = 0
         label.backgroundColor = UIColor.clear
-        label.textColor = UIColor.white
+        label.textColor = .black
         self.addSubview(label)
         self.titleLabel = label
         
@@ -46,7 +46,7 @@ open class TestAnnotationView: ARAnnotationView, UIGestureRecognizerDelegate
         self.addGestureRecognizer(tapGesture)
         
         // Other
-        self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.backgroundColor = .white
         self.layer.cornerRadius = 5
         
         if self.annotation != nil
@@ -67,11 +67,13 @@ open class TestAnnotationView: ARAnnotationView, UIGestureRecognizerDelegate
     // This method is called whenever distance/azimuth is set
     override open func bindUi()
     {
-        if let annotation = self.annotation, let title = annotation.title
-        {
-            let distance = annotation.distanceFromUser > 1000 ? String(format: "%.1fkm", annotation.distanceFromUser / 1000) : String(format:"%.0fm", annotation.distanceFromUser)
+        if let annotation = self.annotation, let title = annotation.title {
+            let distance = annotation.distanceFromUser * 3.2808 //meters to feet
             
-            let text = String(format: "%@\nAZ: %.0f°\nDST: %@", title, annotation.azimuth, distance)
+            let shotDistance = String(format: "%.f yd %.f ft", annotation.shotDistance / 3, annotation.shotDistance.truncatingRemainder(dividingBy: 3))
+            let distanceToPin = String(format: "%.f yd %.f ft", distance / 3, distance.truncatingRemainder(dividingBy: 3))
+            
+            let text = String(format: "%@\nShot: %@\nDistance to Pin: %@", title, shotDistance, distanceToPin)
             self.titleLabel?.text = text
         }
     }
@@ -84,9 +86,20 @@ open class TestAnnotationView: ARAnnotationView, UIGestureRecognizerDelegate
     
     open func tapGesture()
     {
-        if let annotation = self.annotation
-        {
-            let alertView = UIAlertView(title: annotation.title, message: "Tapped", delegate: nil, cancelButtonTitle: "OK")
+        if let annotation = self.annotation {
+            let playerName = annotation.title
+            let tournament = annotation.tournament!
+            let year = annotation.year!
+            let hole = annotation.hole!
+            let round = annotation.round!
+            let distance = annotation.distanceFromUser * 3.2808 //meters to feet
+            
+            let shotDistance = String(format: "%.f yd %.f ft", annotation.shotDistance / 3, annotation.shotDistance.truncatingRemainder(dividingBy: 3))
+            let distanceToPin = String(format: "%.f yd %.f ft", distance / 3, distance.truncatingRemainder(dividingBy: 3))
+            
+            let alertString = "Tounament: \(tournament)\nYear: \(year)\nHole: \(hole)\nRound: \(round)\nShot Distance: \(shotDistance)\nDistance to Pin: \(distanceToPin)"
+            
+            let alertView = UIAlertView(title: playerName, message: alertString, delegate: nil, cancelButtonTitle: "OK")
             alertView.show()
         }
     }
