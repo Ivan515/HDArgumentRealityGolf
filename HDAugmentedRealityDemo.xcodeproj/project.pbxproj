@@ -33,7 +33,7 @@
 		4503C7F01E6E045200C1D9DE /* Shot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4503C7EF1E6E045200C1D9DE /* Shot.swift */; };
 		4503C7F21E6E068B00C1D9DE /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4503C7F11E6E068B00C1D9DE /* FilterView.swift */; };
 		4503C7F41E6E079E00C1D9DE /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4503C7F31E6E079E00C1D9DE /* FilterCell.swift */; };
-		4503C7F71E6E07FA00C1D9DE /* FilterSourceAndFunc`s.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4503C7F61E6E07FA00C1D9DE /* FilterSourceAndFunc`s.swift */; };
+		4503C7F71E6E07FA00C1D9DE /* FilterSourceAndFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4503C7F61E6E07FA00C1D9DE /* FilterSourceAndFuncs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,7 +65,7 @@
 		4503C7EF1E6E045200C1D9DE /* Shot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shot.swift; sourceTree = "<group>"; };
 		4503C7F11E6E068B00C1D9DE /* FilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		4503C7F31E6E079E00C1D9DE /* FilterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
-		4503C7F61E6E07FA00C1D9DE /* FilterSourceAndFunc`s.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FilterSourceAndFunc`s.swift"; sourceTree = "<group>"; };
+		4503C7F61E6E07FA00C1D9DE /* FilterSourceAndFuncs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterSourceAndFuncs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,7 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				4503C7F11E6E068B00C1D9DE /* FilterView.swift */,
-				4503C7F61E6E07FA00C1D9DE /* FilterSourceAndFunc`s.swift */,
+				4503C7F61E6E07FA00C1D9DE /* FilterSourceAndFuncs.swift */,
 				4503C7F31E6E079E00C1D9DE /* FilterCell.swift */,
 			);
 			name = Filter;
@@ -294,7 +294,7 @@
 				4503C7E41E6E029700C1D9DE /* DataRead.swift in Sources */,
 				4503C7EE1E6E044800C1D9DE /* Player.swift in Sources */,
 				0CF0F8E71BC5E70C00C7646E /* ARAnnotation.swift in Sources */,
-				4503C7F71E6E07FA00C1D9DE /* FilterSourceAndFunc`s.swift in Sources */,
+				4503C7F71E6E07FA00C1D9DE /* FilterSourceAndFuncs.swift in Sources */,
 				0CAD4EB31AE6FC14000F2A2A /* AppDelegate.swift in Sources */,
 				0CF0F8EB1BC5E70C00C7646E /* ARViewController.swift in Sources */,
 				0CF0F8E91BC5E70C00C7646E /* ARConfiguration.swift in Sources */,

@@ -12,19 +12,39 @@ import CoreLocation
 class ViewController: UIViewController, ARDataSource {
     
     var filterButton: UIButton?
-    let filterView = FilterView()
+    let filterView = FilterView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
     
     var sortedData = [InfoShot]()
     
     var locManager = CLLocationManager()
     var currentLocation: CLLocation!
     
+    var updateButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Start augmented reality", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
+        button.backgroundColor = UIColor(red: 101/255, green: 156/255, blue: 53/255, alpha: 1)
+        return button
+    }()
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.addFilterButton()
         self.locManager.requestWhenInUseAuthorization()
         self.assignCurrentLocation()
+        
+        updateButton.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - 70, width: UIScreen.main.bounds.width, height: 70)
+        updateButton.addTarget(self, action: #selector(update), for: UIControlEvents.touchUpInside)
+        self.filterView.addSubview(updateButton)
+        
+        self.view.addSubview(filterView)
+    }
+    
+    func update() {
+        print("Update tapped")
+        filterView.update()
+        showARViewController()
     }
     
     internal func showFilterView() {
@@ -107,12 +127,6 @@ class ViewController: UIViewController, ARDataSource {
         return annotations
     }
     
-    @IBAction func buttonTap(_ sender: AnyObject)
-    {
-        showARViewController()
-        filterView.dismissFilterView()
-    }
-    
     func handleLocationFailure(elapsedSeconds: TimeInterval, acquiredLocationBefore: Bool, arViewController: ARViewController?)
     {
         guard let arViewController = arViewController else { return }
@@ -136,23 +150,7 @@ class ViewController: UIViewController, ARDataSource {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////       @@@@@@@ CUSTOM SECTION @@@@@@@           //////////////////////////////////// ////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    func addFilterButton() {
-        self.filterButton?.removeFromSuperview()
-        let filterButton: UIButton = UIButton()
-        filterButton.frame = CGRect(x: 0, y: self.view.bounds.size.height - 60, width: self.view.bounds.size.width, height: 60)
-        
-        filterButton.backgroundColor = UIColor(red: 101/255, green: 156/255, blue: 53/255, alpha: 1)
-        filterButton.setTitle("FILTER", for: .normal)
-        filterButton.setTitleColor(.white, for: .normal)
-        filterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 28)
-        
-        filterButton.addTarget(self, action: #selector(self.showFilterView), for: UIControlEvents.touchUpInside)
-        
-        self.view.addSubview(filterButton)
-        self.filterButton = filterButton
-    }
-    
+
     func assignCurrentLocation(){
         if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
             CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways) {

@@ -8,7 +8,17 @@
 
 import UIKit
 
-class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
+class FilterView: UIView, UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
+    
+    override init(frame: CGRect) {
+        super.init(frame:frame)
+        
+        showFilterView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     var view = UIView()
     var tableView: UITableView = UITableView()
@@ -52,8 +62,6 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
     func update() {
         print("Update tapped")
         self.sort()
-        
-        dismissFilterView()
     }
     
     func sort() {
@@ -61,77 +69,53 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
     }
     
     func showFilterView() {
-        if let keyWindow = UIApplication.shared.keyWindow {
-            view = UIView(frame: CGRect(x: 0, y: keyWindow.frame.height / 2 - 50, width: keyWindow.frame.width, height: keyWindow.frame.height / 2 - 50))
-            view.backgroundColor = .white
-            view.frame = CGRect(x: 0, y: keyWindow.frame.height - 1, width: keyWindow.frame.width, height: 1)
-            
-            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeDown(_:)))
-            swipe.direction = UISwipeGestureRecognizerDirection.down
-            
-            titleLabel.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: 50)
-            view.addSubview(titleLabel)
-            
-            tableView = UITableView(frame: CGRect(x: 0, y: 50, width: keyWindow.frame.width, height: keyWindow.frame.height / 2 - 70))
-            tableView.backgroundColor = .black
-            tableView.separatorInset = UIEdgeInsets.zero
-            tableView.allowsSelection = false
-            tableView.isScrollEnabled = false
-            tableView.delegate      =   self
-            tableView.dataSource    =   self
-            tableView.register(FilterCell.self, forCellReuseIdentifier: "Cell")
-            tableView.addGestureRecognizer(swipe)
-            view.addSubview(tableView)
-            
-            picker = UIPickerView(frame: CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: keyWindow.frame.height / 2 + 10))
-            picker.backgroundColor = UIColor(red: 136/255, green: 192/255, blue: 87/255, alpha: 0.6)
-            picker.tintColor = .white
-            picker.showsSelectionIndicator = true
-            picker.delegate = self
-            picker.dataSource = self
-            
-            toolBar.barStyle = UIBarStyle.default
-            toolBar.barTintColor = UIColor(red: 136/255, green: 192/255, blue: 87/255, alpha: 0.3)
-            toolBar.isTranslucent = false
-            toolBar.tintColor = .white
-            
-            toolBar.sizeToFit()
-            
-            let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(donePicker))
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-            let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(cancelPicker))
-            
-            toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
-            toolBar.isUserInteractionEnabled = true
-            
-            updateButton.frame = CGRect(x: 0, y: keyWindow.frame.height / 2 - 20, width: keyWindow.frame.width, height: 70)
-            updateButton.addTarget(self, action: #selector(update), for: UIControlEvents.touchUpInside)
-            view.addSubview(updateButton)
-            
-            keyWindow.addSubview(view)
-            
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                self.view.frame = CGRect(x: 0, y: keyWindow.frame.height / 2 - 50, width: keyWindow.frame.width, height: keyWindow.frame.height)
-            }, completion: { (completedAnimation) in
-                
-            })
-            
-            pickerData = [filterData.tournaments, filterData.golfers, filterData.years, filterData.rounds, filterData.holes]
-        }
+        let screenBounds = UIScreen.main.bounds
+        print(screenBounds.height)
+        view = UIView(frame: CGRect(x: 0, y: screenBounds.height / 2 - 50, width: screenBounds.width, height: screenBounds.height))
+        view.backgroundColor = .white
+        
+        titleLabel.frame = CGRect(x: 0, y: 0, width: screenBounds.width, height: 50)
+        view.addSubview(titleLabel)
+        
+        tableView = UITableView(frame: CGRect(x: 0, y: 50, width: screenBounds.width, height: screenBounds.height / 2 - 70))
+        tableView.backgroundColor = .black
+        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.allowsSelection = false
+        tableView.isScrollEnabled = false
+        tableView.delegate      =   self
+        tableView.dataSource    =   self
+        tableView.register(FilterCell.self, forCellReuseIdentifier: "Cell")
+        view.addSubview(tableView)
+        
+        picker = UIPickerView(frame: CGRect(x: 0, y: 0, width: screenBounds.width, height: screenBounds.height / 2 + 10))
+        picker.backgroundColor = UIColor(red: 136/255, green: 192/255, blue: 87/255, alpha: 0.6)
+        picker.tintColor = .white
+        picker.showsSelectionIndicator = true
+        picker.delegate = self
+        picker.dataSource = self
+        
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.barTintColor = UIColor(red: 136/255, green: 192/255, blue: 87/255, alpha: 0.3)
+        toolBar.isTranslucent = false
+        toolBar.tintColor = .white
+        
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(donePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(cancelPicker))
+        
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
+        updateButton.frame = CGRect(x: 0, y: screenBounds.height / 2 - 20, width: screenBounds.width, height: 70)
+        updateButton.addTarget(self, action: #selector(update), for: UIControlEvents.touchUpInside)
+        //view.addSubview(updateButton)
+        
+        addSubview(view)
+        
+        pickerData = [filterData.tournaments, filterData.golfers, filterData.years, filterData.rounds, filterData.holes]
     }
-    
-    func swipeDown(_ gesture: UIGestureRecognizer) {
-        dismissFilterView()
-    }
-    
-    func dismissFilterView() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.view.frame = CGRect(x: 0, y: UIApplication.shared.keyWindow!.frame.height - 1, width: UIApplication.shared.keyWindow!.frame.width, height: 1)
-        }) { _ in
-            self.view.removeFromSuperview()
-        }
-    }
-    
     
     //MARK: TableView
     
@@ -152,16 +136,16 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
         switch indexPath.row {
         case 1:
             cell.label.text = "Golfer:"
-            cell.textField.attributedPlaceholder = NSAttributedString(string: "Chose Golfer",attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
+            cell.textField.attributedPlaceholder = NSAttributedString(string: "Choose Golfer",attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
         case 2:
             cell.label.text = "Year:"
-            cell.textField.attributedPlaceholder = NSAttributedString(string: "Chose Year",attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
+            cell.textField.attributedPlaceholder = NSAttributedString(string: "Choose Year",attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
         case 3:
             cell.label.text = "Round:"
-            cell.textField.attributedPlaceholder = NSAttributedString(string: "Chose Round",attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
+            cell.textField.attributedPlaceholder = NSAttributedString(string: "Choose Round",attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
         case 4:
             cell.label.text = "Hole:"
-            cell.textField.attributedPlaceholder = NSAttributedString(string: "Chose Hole",attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
+            cell.textField.attributedPlaceholder = NSAttributedString(string: "Choose Hole",attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
         default:
             cell.label.text = "Tournament:"
             cell.textField.text = "The Players Championship"
@@ -172,7 +156,7 @@ class FilterView: NSObject, UITableViewDelegate, UITableViewDataSource, UIPicker
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (UIApplication.shared.keyWindow!.frame.height / 2 - 70) / 5
+        return (UIScreen.main.bounds.height / 2 - 70) / 5
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
